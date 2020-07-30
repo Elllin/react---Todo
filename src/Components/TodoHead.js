@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function Head() {
+function TodoHead() {
   return (
     <HeadBlock>
       <h1>2020-07-30</h1>
@@ -33,4 +33,4 @@ const HeadBlock = styled.div`
   }
 `;
 
-export default Head;
+export default TodoHead;
