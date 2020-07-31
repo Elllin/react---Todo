@@ -12,7 +12,7 @@ const TodoTemplateBlock = styled.div`
   height: 630px;
 
   margin: 0 auto;
-  margin-top: 55px;
+  margin-top: 42px;
 
   position: relative;
   background: #fff;
