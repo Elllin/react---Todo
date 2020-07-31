@@ -2,10 +2,19 @@ import React from "react";
 import styled from "styled-components";
 
 function TodoHead() {
+  const today = new Date();
+  const dateString = today.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const dayName = today.toLocaleDateString("ko-KR", { weekday: "long" });
+
   return (
     <HeadBlock>
-      <h1>2020-07-30</h1>
-      <div className="day">수요일</div>
+      <h1>{dateString}</h1>
+      <div className="day">{dayName}</div>
       <div className="tasks-left">남은 할일 2개</div>
     </HeadBlock>
   );
