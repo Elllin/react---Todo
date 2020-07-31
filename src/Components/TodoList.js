@@ -7,8 +7,8 @@ function TodoList() {
   const todos = useTodoState();
   return (
     <TodoListBlock>
-      {todos.map((todo) => (
-        <TodoItem id={todo.id} text={todo.text} />
+      {todos.map(({ id, text, done }) => (
+        <TodoItem key={id} id={id} text={text} done={done} />
       ))}
     </TodoListBlock>
   );
