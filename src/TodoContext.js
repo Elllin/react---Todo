@@ -1,6 +1,6 @@
-import React, { useReducer, createContext, useContext } from "react";
+import React, { useReducer, createContext, useContext, useRef } from "react";
 
-const initialTodo = [
+const initialTodos = [
   {
     id: 1,
     text: "프로젝트 생성하기",
@@ -23,6 +23,10 @@ const initialTodo = [
   },
 ];
 
+const TodoDispatchContext = createContext();
+const TodoStateContext = createContext();
+const TodoNextIdContext = createContext();
+
 function todoReducer(state, action) {
   switch (action.type) {
     case "CREATE":
@@ -38,17 +42,18 @@ function todoReducer(state, action) {
   }
 }
 
-const TodoDispatchContext = createContext();
-const TodoStateContext = createContext();
+function TodoProvider({ children }) {
+  const [state, dispatch] = useReducer(todoReducer, initialTodos);
+  const nextId = useRef(5);
 
-function TodoContext({ children }) {
-  const [state, dispatch] = useReducer(todoReducer, initialTodo);
   return (
-    <TodoStateContext.provider value={state}>
+    <TodoStateContext.Provider value={state}>
       <TodoDispatchContext.Provider value={dispatch}>
-        {children}
+        <TodoNextIdContext.Provider value={nextId}>
+          {children}
+        </TodoNextIdContext.Provider>
       </TodoDispatchContext.Provider>
-    </TodoStateContext.provider>
+    </TodoStateContext.Provider>
   );
 }
 
@@ -60,8 +65,14 @@ export function useTodoState() {
 
 export function useTodoDispatch() {
   const context = useContext(TodoDispatchContext);
-  if (!context) throw new Error("Cannot find TodoStateProvider");
+  if (!context) throw new Error("Cannot find TodoDispatchProvider");
   return context;
 }
 
-export default TodoContext;
+export function useNextIdDispatch() {
+  const context = useContext(TodoNextIdContext);
+  if (!context) throw new Error("Cannot find TodoNextIdProvider");
+  return context;
+}
+
+export default TodoProvider;

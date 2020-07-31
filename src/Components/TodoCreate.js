@@ -1,20 +1,43 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { MdAdd } from "react-icons/md";
+import { useTodoDispatch, useNextIdDispatch } from "../TodoContext";
 
 function TodoCreate() {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const onToggle = () => setOpen(!open);
+  const nextId = useNextIdDispatch();
+  const dispatch = useTodoDispatch();
 
-  const onToggle = () => {
-    setOpen(!open);
+  const onChange = (e) => setValue(e.target.value);
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch({
+      type: "CREATE",
+      todo: {
+        id: nextId.current,
+        text: value,
+        done: false,
+      },
+    });
+    setValue("");
+    setOpen(false);
+    nextId.current++;
   };
 
   return (
     <>
       {open && (
         <InsertFormPositioner>
-          <InsertForm>
-            <Input autoFocus placeholder="할 일을 입력 후, Enter 를 누르세요" />
+          <InsertForm onSubmit={onSubmit}>
+            <Input
+              autoFocus
+              value={value}
+              onChange={onChange}
+              placeholder="할 일을 입력 후, Enter 를 누르세요"
+            />
           </InsertForm>
         </InsertFormPositioner>
       )}
@@ -73,7 +96,7 @@ const InsertFormPositioner = styled.div`
   width: 100%;
 `;
 
-const InsertForm = styled.div`
+const InsertForm = styled.form`
   background: #f8f9fa;
   padding: 30px 30px 70px;
   border-bottom-left-radius: 16px;
