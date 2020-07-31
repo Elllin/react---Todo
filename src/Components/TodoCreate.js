@@ -114,4 +114,4 @@ const Input = styled.input`
   font-size: 16px;
 `;
 
-export default TodoCreate;
+export default React.memo(TodoCreate);
